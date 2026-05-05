@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Letter to God - Advanced Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #b0bec5;
+            --success: #00e676;
+            --danger: #ff1744;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Decorative glowing orbs */
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+        .container::before {
+            top: -50px; left: -50px; background: var(--primary);
+        }
+        .container::after {
+            bottom: -50px; right: -50px; background: var(--secondary);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: -webkit-linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-weight: 300;
+            font-size: clamp(0.9em, 3vw, 1.1em);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-text {
+            font-size: clamp(1.1em, 4vw, 1.25em);
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .options { list-style: none; }
+        .options li { margin-bottom: 12px; }
+
+        .options label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(0.95em, 3vw, 1.05em);
+        }
+
+        @media (hover: hover) {
+            .options label:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: translateX(8px);
+                border-color: var(--secondary);
+            }
+        }
+
+        .options input[type="radio"] { display: none; }
+
+        .custom-radio {
+            width: 20px; height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            margin-right: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .custom-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 10px; height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .options input[type="radio"]:checked + label {
+            background: rgba(79, 172, 254, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+        .options input[type="radio"]:checked + label .custom-radio {
+            border-color: var(--primary);
+        }
+        .options input[type="radio"]:checked + label .custom-radio::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .btn {
+            display: block; width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #000; border: none; border-radius: 12px;
+            font-size: 1.2em; font-weight: 700; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; margin-top: 30px;
+            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn:active { transform: scale(0.98); }
+        @media (hover: hover) {
+            .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0, 242, 254, 0.5); }
+        }
+
+        /* Results & Accomplishments Section */
+        #result-container {
+            display: none; text-align: center; margin-top: 40px;
+            padding: 40px 20px; background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px; border: 2px solid var(--primary);
+            animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes zoomIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .score-circle {
+            width: 120px; height: 120px; border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, transparent 0%);
+            margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+            position: relative; box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+        }
+        .score-circle::before {
+            content: ''; position: absolute; width: 100px; height: 100px;
+            background: #1a2a32; border-radius: 50%;
+        }
+        .score-text { position: relative; font-size: 1.8em; font-weight: 700; z-index: 1; }
+
+        .accomplishment {
+            font-size: 1.5em; font-weight: 800; margin: 15px 0;
+            padding: 10px; border-radius: 10px; text-transform: uppercase;
+            letter-spacing: 1px; display: inline-block;
+            animation: pulseBadge 2s infinite;
+        }
+
+        @keyframes pulseBadge {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .badge-gold { color: var(--gold); text-shadow: 0 0 15px rgba(255,215,0,0.5); border: 2px solid var(--gold); }
+        .badge-silver { color: var(--silver); text-shadow: 0 0 15px rgba(192,192,192,0.5); border: 2px solid var(--silver); }
+        .badge-bronze { color: var(--bronze); text-shadow: 0 0 15px rgba(205,127,50,0.5); border: 2px solid var(--bronze); }
+
+        .share-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 20px; padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; border-radius: 50px; font-weight: 600; cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .share-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .share-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .feedback {
+            margin-top: 15px; padding: 15px; border-radius: 8px;
+            font-weight: 600; display: none; animation: fadeIn 0.4s forwards;
+            font-size: 0.9em;
+        }
+        .feedback.correct { background: rgba(0, 230, 118, 0.1); color: var(--success); border-left: 4px solid var(--success); }
+        .feedback.wrong { background: rgba(255, 23, 68, 0.1); color: var(--danger); border-left: 4px solid var(--danger); }
+
+        /* Advanced Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .container { padding: 25px 15px; border-radius: 15px; margin-top: 10px; }
+            .score-circle { width: 100px; height: 100px; }
+            .score-circle::before { width: 85px; height: 85px; }
+            .score-text { font-size: 1.5em; }
+            .accomplishment { font-size: 1.2em; }
+            .btn { padding: 12px; font-size: 1.1em; }
+            .share-btn { width: 100%; margin-top: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>A Letter to God</h1>
+    <p class="subtitle">Interactive Reading Comprehension</p>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div id="quiz-container">
+        </div>
+    
+    <button class="btn" id="submit-btn" onclick="submitQuiz()">Submit Answers</button>
+
+    <div id="result-container">
+        <div class="score-circle" id="score-circle">
+            <div class="score-text" id="score-text">0/9</div>
+        </div>
+        
+        <div id="accomplishment-badge" class="accomplishment"></div>
+        <p style="color: var(--text-muted); margin-top: 10px;">Scroll up to review your answers.</p>
+        
+        <button class="share-btn" onclick="shareResults()">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+            Share with Friends
+        </button>
+
+        <button class="btn" onclick="location.reload()" style="max-width: 300px; margin: 20px auto 0;">Retake Quiz</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            question: "1. What did Lencho hope for?",
+            options: [
+                "A new tractor for his farm",
+                "A downpour or at least a shower for his crop",
+                "A hundred pesos immediately",
+                "A letter from his son"
+            ],
+            correct: 1
+        },
+        {
+            question: "2. Why did Lencho say the raindrops were like 'new coins'?",
+            options: [
+                "Because they were shiny and cold",
+                "Because he found actual silver coins in the field",
+                "Because the rain would bring a good harvest and money",
+                "Because they fell heavily on the tin roof"
+            ],
+            correct: 2
+        },
+        {
+            question: "3. How did the rain change and what happened to Lencho’s fields?",
+            options: [
+                "It turned into a light drizzle, helping the crops",
+                "It changed into a hailstorm, completely destroying the corn",
+                "It stopped completely, causing a severe drought",
+                "It caused a flood that washed away his house"
+            ],
+            correct: 1
+        },
+        {
+            question: "4. What were Lencho’s feelings when the hail stopped?",
+            options: [
+                "His soul was filled with sadness and despair",
+                "He was relieved the storm was finally over",
+                "He was happy to collect the frozen pearls",
+                "He was excited to plant new seeds right away"
+            ],
+            correct: 0
+        },
+        {
+            question: "5. Who or what did Lencho have faith in? What did he do?",
+            options: [
+                "He had faith in the government and wrote to the mayor",
+                "He had faith in his neighbors and asked for a loan",
+                "He had faith in God and wrote a letter asking for a hundred pesos",
+                "He had faith in his own hard work and started replanting immediately"
+            ],
+            correct: 2
+        },
+        {
+            question: "6. Who read the letter?",
+            options: [
+                "Lencho's wife",
+                "God",
+                "The village chief",
+                "The postmaster"
+            ],
+            correct: 3
+        },
+        {
+            question: "7. What did the postmaster do then?",
+            options: [
+                "He threw the letter in the trash laughing",
+                "He collected money from employees and friends to send to Lencho",
+                "He replied telling Lencho to work harder",
+                "He went to Lencho's house to deliver the money personally"
+            ],
+            correct: 1
+        },
+        {
+            question: "8. Was Lencho surprised to find a letter for him with money in it?",
+            options: [
+                "Yes, he fainted from shock",
+                "Yes, he couldn't believe his eyes",
+                "No, he showed not the slightest surprise because of his confidence",
+                "No, because the postman told him beforehand"
+            ],
+            correct: 2
+        },
+        {
+            question: "9. What made him angry?",
+            options: [
+                "The postmaster laughed at him through the window",
+                "He received only seventy pesos instead of the hundred he asked for",
+                "The letter was torn and wet",
+                "The ink on the signature was smudged"
+            ],
+            correct: 1
+        }
+    ];
+
+    let finalScore = 0;
+    const quizContainer = document.getElementById('quiz-container');
+    const progressBar = document.getElementById('progress-bar');
+
+    function updateProgress() {
+        const checkedInputs = document.querySelectorAll('input[type="radio"]:checked');
+        const percentage = (checkedInputs.length / quizData.length) * 100;
+        progressBar.style.width = `${percentage}%`;
+    }
+
+    function buildQuiz() {
+        quizData.forEach((item, index) => {
+            const questionBlock = document.createElement('div');
+            questionBlock.className = 'question-block';
+            questionBlock.style.animationDelay = `${index * 0.1}s`;
+
+            const questionText = document.createElement('div');
+            questionText.className = 'question-text';
+            questionText.innerText = item.question;
+            questionBlock.appendChild(questionText);
+
+            const optionsList = document.createElement('ul');
+            optionsList.className = 'options';
+
+            item.options.forEach((option, optIndex) => {
+                const li = document.createElement('li');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = `question${index}`;
+                input.id = `q${index}_opt${optIndex}`;
+                input.value = optIndex;
+                input.addEventListener('change', updateProgress);
+
+                const label = document.createElement('label');
+                label.setAttribute('for', `q${index}_opt${optIndex}`);
+                
+                const customRadio = document.createElement('div');
+                customRadio.className = 'custom-radio';
+
+                label.appendChild(customRadio);
+                label.appendChild(document.createTextNode(option));
+                
+                li.appendChild(input);
+                li.appendChild(label);
+                optionsList.appendChild(li);
+            });
+
+            questionBlock.appendChild(optionsList);
+
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'feedback';
+            feedbackDiv.id = `feedback-${index}`;
+            questionBlock.appendChild(feedbackDiv);
+
+            quizContainer.appendChild(questionBlock);
+        });
+    }
+
+    function animateScoreCircle(score) {
+        const circle = document.getElementById('score-circle');
+        const text = document.getElementById('score-text');
+        const percentage = (score / quizData.length) * 360;
+        
+        let currentAngle = 0;
+        const animation = setInterval(() => {
+            if(currentAngle >= percentage) {
+                clearInterval(animation);
+            } else {
+                currentAngle += 5;
+                circle.style.background = `conic-gradient(var(--primary) ${currentAngle}deg, transparent 0%)`;
+            }
+        }, 15);
+        
+        text.innerText = `${score}/${quizData.length}`;
+    }
+
+    function setAccomplishment(score) {
+        const badge = document.getElementById('accomplishment-badge');
+        const total = quizData.length;
+        const percentage = score / total;
+
+        if (percentage === 1) {
+            badge.className = 'accomplishment badge-gold';
+            badge.innerHTML = '🏆 Perfect Score! Master Scholar!';
+        } else if (percentage >= 0.7) {
+            badge.className = 'accomplishment badge-silver';
+            badge.innerHTML = '🥈 Great Job! Well Done!';
+        } else {
+            badge.className = 'accomplishment badge-bronze';
+            badge.innerHTML = '📚 Good Effort! Keep Practicing!';
+        }
+    }
+
+    function submitQuiz() {
+        const checkedInputs = document.querySelectorAll('input[type="radio"]:checked');
+        if (checkedInputs.length < quizData.length) {
+            alert("Please complete all questions to unleash your score!");
+            return;
+        }
+
+        finalScore = 0;
+
+        quizData.forEach((item, index) => {
+            const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+            const feedbackBlock = document.getElementById(`feedback-${index}`);
+            const answerValue = parseInt(selectedOption.value);
+            
+            feedbackBlock.style.display = 'block';
+
+            if (answerValue === item.correct) {
+                finalScore++;
+                feedbackBlock.className = 'feedback correct';
+                feedbackBlock.innerHTML = `✓ Brilliant! You got it right.`;
+            } else {
+                feedbackBlock.className = 'feedback wrong';
+                feedbackBlock.innerHTML = `✗ Oops! The correct answer is: <strong>${item.options[item.correct]}</strong>`;
+            }
+            
+            // Disable inputs securely
+            const radios = document.querySelectorAll(`input[name="question${index}"]`);
+            radios.forEach(radio => radio.disabled = true);
+        });
+
+        // Hide submit button and reveal results
+        document.getElementById('submit-btn').style.display = 'none';
+        const resultContainer = document.getElementById('result-container');
+        resultContainer.style.display = 'block';
+        
+        setAccomplishment(finalScore);
+
+        // Scroll to results smoothly
+        setTimeout(() => {
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            animateScoreCircle(finalScore);
+        }, 300);
+    }
+
+    // Modern Web Share API Integration
+    async function shareResults() {
+        const shareData = {
+            title: 'A Letter to God - Quiz',
+            text: `I just scored ${finalScore}/${quizData.length} on this "A Letter to God" comprehension quiz! Think you can beat my score? 🏆`,
+            url: window.location.href
+        };
+
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                // Fallback for desktop/unsupported browsers
+                await navigator.clipboard.writeText(`${shareData.text} \nTry it here: ${shareData.url}`);
+                alert("Score copied to clipboard! Paste it to your friends.");
+            }
+        } catch (err) {
+            console.log('Error sharing:', err);
+        }
+    }
+
+    // Initialize
+    buildQuiz();
+</script>
+
+</body>
+</html>
